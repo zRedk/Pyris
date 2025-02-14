@@ -8,13 +8,13 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "pyris",
+    name: "Pyris",
     platforms: [
         .iOS("16.0")
     ],
     products: [
         .iOSApplication(
-            name: "pyris",
+            name: "Pyris",
             targets: ["AppModule"],
             bundleIdentifier: "com.federicamosca.calcifer",
             teamIdentifier: "52J8PJ423S",
