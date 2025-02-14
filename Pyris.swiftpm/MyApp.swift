@@ -19,6 +19,8 @@ struct MyApp: App {
                 case .endGame: EndGameView()
                 }
             }
+            .ignoresSafeArea()
+            .statusBarHidden(true)
             .environment(\.setSceneMode, setSceneMode)
             .environmentObject(viewModel)
         }

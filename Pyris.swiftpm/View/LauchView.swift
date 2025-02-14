@@ -12,18 +12,25 @@ struct LauchView: View {
     @Environment(\.setSceneMode) private var setSceneMode
     
     var body: some View {
-        ZStack(alignment: .bottom) {
+        
+        ZStack(alignment: .center) {
+            
             Color.black
                 .ignoresSafeArea()
 
-            Image("calcifer")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .shadow(color: Color.orange, radius: 10)
-                .padding(.bottom, 70)
-            
-            Button("Start") {
-                setSceneMode(.intro)
+            VStack(spacing: 120) {
+                
+                Text("Pyris")
+                    .font(.system(size: 72))
+                    .fontWidth(.expanded)
+                    .foregroundStyle(.white)
+                
+                Button("Start the experience", systemImage: "play") {
+                    setSceneMode(.intro)
+                }
+                .font(.title2)
+                .fontWeight(.bold)
+                .buttonStyle(.borderedProminent)
             }
         }
     }
