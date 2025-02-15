@@ -33,6 +33,10 @@ struct IntroView: View {
                             .animation(.easeInOut(duration: 6), value: showScene)
                     )
                 
+                if currentPhase == .phase5{
+                    WindAnimationView()
+                }
+                
                 VStack(alignment: .center) {
                     
                     Spacer()
