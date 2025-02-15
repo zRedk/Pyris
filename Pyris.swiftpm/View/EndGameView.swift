@@ -9,18 +9,32 @@ import SwiftUI
 
 struct EndGameView: View {
     var body: some View {
-        ZStack {
-            Image("background")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
+        
+        GeometryReader { geometry in
             
-            VStack {
-                Text("You blowed all the wind out!")
-                    .font(.largeTitle)
-                    .multilineTextAlignment(.center)
-                    .padding()
+            ZStack {
+                
+                Image("Woods")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: geometry.size.width,
+                           height: geometry.size.height)
+                    .opacity(0.7)
+                
+                VStack {
+                    Text("You blowed all the wind out!")
+                        .font(.system(size: 48))
+                        .fontWidth(.expanded)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.white)
+                        .shadow(color: .accentColor, radius: 10)
+                        .padding()
+                        .background(Color.black.opacity(0.7))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
             }
+            .transition(.opacity.animation(.easeInOut(duration: 1)))
+            
         }
     }
 }

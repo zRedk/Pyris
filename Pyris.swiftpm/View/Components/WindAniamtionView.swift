@@ -4,25 +4,78 @@
 //
 //  Created by Federica Mosca on 15/02/25.
 //
+
 import SwiftUI
 
+import Combine
+
 struct WindAnimationView: View {
+    
+    private struct WindMetaData: Identifiable {
+        let id: UUID = UUID()
+        let progressOffset: CGFloat
+        let lineWidth: CGFloat
+        let shadowRadius: CGFloat
+        let stackOffset: CGFloat
+    }
+    
     @State private var progress: CGFloat = 0.0
-    let timer = Timer.publish(every: 0.02, on: .main, in: .common).autoconnect()
+    
+    private let timer: Publishers.Autoconnect<Timer.TimerPublisher>
+    
+    private let windPaths: [WindMetaData] = [
+        .init(progressOffset: 0.05,
+              lineWidth: 5,
+              shadowRadius: 10,
+              stackOffset: 120),
+        .init(progressOffset: -0.025,
+              lineWidth: 1.5,
+              shadowRadius: 6,
+              stackOffset: 90),
+        .init(progressOffset: 0.025,
+              lineWidth: 5,
+              shadowRadius: 10,
+              stackOffset: 60),
+        .init(progressOffset: -0.05,
+              lineWidth: 1.5,
+              shadowRadius: 6,
+              stackOffset: 30),
+        .init(progressOffset: 0,
+              lineWidth: 5,
+              shadowRadius: 10,
+              stackOffset: 0),
+    ]
+    
+    private let shouldRepeat: Bool
+    
+    init(shouldRepeat: Bool = false, slowMultiplier: Double = 1) {
+        self.shouldRepeat = shouldRepeat
+        
+        self.timer = Timer.publish(
+            every: 0.01375 * slowMultiplier,
+            on: .main,
+            in: .common
+        ).autoconnect()
+    }
     
     var body: some View {
         GeometryReader { geometry in
+            
             ZStack {
-                Color.black.ignoresSafeArea() // Sfondo (opzionale)
-                WindPath(progress: progress)
-                    .stroke(Color.white, lineWidth: 2)
-                    .opacity(0.8)
-                    // Impostiamo il frame usando le dimensioni attuali
-                    .frame(width: geometry.size.width, height: geometry.size.height)
+                ForEach(windPaths) { metaData in
+                    WindPath(progress: progress + metaData.progressOffset)
+                        .stroke(.white, lineWidth: metaData.lineWidth)
+                        .shadow(color: .cyan.opacity(0.6) , radius: metaData.shadowRadius)
+                        .opacity(0.8)
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .offset(y: metaData.stackOffset)
+                }
             }
             .onReceive(timer) { _ in
+                
                 progress += 0.005
-                if progress > 1.0 {
+                
+                if progress > 1.0 && shouldRepeat {
                     progress = 0.0
                 }
             }

@@ -12,6 +12,9 @@ struct MyApp: App {
         WindowGroup {
             
             ZStack {
+                
+                Color.black
+                
                 switch currentSceneMode{
                 case .launch: LauchView()
                 case .intro: IntroView()

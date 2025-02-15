@@ -21,21 +21,18 @@ struct IntroView: View {
         GeometryReader { geometry in
             
             ZStack(alignment: .center) {
-                
-                Image("background")
+                                
+                Image("Woods")
                     .resizable()
                     .scaledToFill()
                     .frame(width: geometry.size.width,
                            height: geometry.size.height)
+                    .opacity(0.7)
                     .overlay(
                         Color.black
                             .opacity(showScene ? 0 : 1)
                             .animation(.easeInOut(duration: 6), value: showScene)
                     )
-                
-                if currentPhase == .phase5{
-                    WindAnimationView()
-                }
                 
                 VStack(alignment: .center) {
                     
@@ -48,6 +45,9 @@ struct IntroView: View {
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.white)
                         .shadow(color: .accentColor, radius: showScene ? 10 : 5)
+                        .padding()
+                        .background(Color.black.opacity(0.7))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
                         .transition(.opacity.animation(.easeInOut(duration: 1)))
                     
                     Spacer()
@@ -56,8 +56,9 @@ struct IntroView: View {
                         
                         Image("Pyris")
                             .resizable()
-                            .frame(width: 200, height: 200)
-                            .shadow(color: .orange, radius: 10)
+                            .scaledToFit()
+                            .frame(width: 200)
+                            .shadow(color: .accentColor, radius: 10)
                             .padding(.bottom, 70)
                             .transition(.scale.animation(.easeInOut(duration: 2)))
                     }
@@ -83,6 +84,11 @@ struct IntroView: View {
                            alignment: .bottomTrailing)
                     .transition(.opacity.animation(.easeInOut(duration: 2)))
                 }
+                
+                if currentPhase == .phase5{
+                    WindAnimationView()
+                        .offset(y: 150)
+                }
             }
             .frame(width: geometry.size.width,
                    height: geometry.size.height)
@@ -91,16 +97,15 @@ struct IntroView: View {
     }
     
     private func enableNext(_ phase: Phase) {
-        
         Task(priority: .userInitiated) { @MainActor in
-            
-            try? await Task.sleep(for: .seconds(phase == .phase3 ? 6 : 2))
+            try? await Task.sleep(
+                for: .seconds(phase == .phase3 ? 6 : 2)
+            )
             withAnimation { nextButtonIsEnabled = true }
         }
     }
     
     private func transition(to phase: Phase) {
-        
         withAnimation {
             nextButtonIsEnabled = false
             currentPhase = phase
@@ -129,9 +134,9 @@ extension IntroView {
             case .phase1: "In the vast darkness, a tiny light appears"
             case .phase2: "It's Pyris, glowing with joy"
             case .phase3: "Bringing light to everything around her"
-            case .phase4: "Dancing and waking up all the flowers"
-            case .phase5: "Suddenly the wind starts hitting Pyris"
-            case .phase6: "Pyris starts growing out of control"
+            case .phase4: "So bright that awakes all the beauties of the woods"
+            case .phase5: "But suddenly... the wind starts blowing"
+            case .phase6: "Pyris fears the wind, starting losing control"
             case .phase7: "The flames rage and endanger the forest"
             }
         }
