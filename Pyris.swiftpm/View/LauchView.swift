@@ -13,25 +13,40 @@ struct LauchView: View {
     
     var body: some View {
         
-        ZStack(alignment: .center) {
+        GeometryReader { geometry in
             
-            Color.black
-                .ignoresSafeArea()
-
-            VStack(spacing: 120) {
+            ZStack(alignment: .center) {
                 
-                Text("Pyris")
-                    .font(.system(size: 72))
-                    .fontWidth(.expanded)
-                    .foregroundStyle(.white)
+                Image("Woods")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: geometry.size.width,
+                           height: geometry.size.height)
+                    .opacity(0.7)
                 
-                Button("Start the experience", systemImage: "play") {
-                    setSceneMode(.intro)
+                VStack(spacing: 120) {
+                    
+                    Text("Pyris")
+                        .font(.system(size: 72))
+                        .fontWidth(.expanded)
+                        .foregroundStyle(.white)
+                        .shadow(color: .accentColor, radius: 10)
+                        .padding()
+                        .background(Color.black.opacity(0.4))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                    
+                    Button("Start the experience", systemImage: "play") {
+                        withAnimation {
+                            setSceneMode(.intro)
+                        }
+                    }
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .buttonStyle(.borderedProminent)
+                    .scaleEffect(1.5)
                 }
-                .font(.title2)
-                .fontWeight(.bold)
-                .buttonStyle(.borderedProminent)
             }
         }
+        .transition(.opacity)
     }
 }

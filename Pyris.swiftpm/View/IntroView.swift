@@ -10,18 +10,14 @@ struct IntroView: View {
     
     @Environment(\.setSceneMode) private var setSceneMode
     
-    @State private var showScene: Bool = false
-    
-    @State private var currentPhase: Phase = .phase1
-    
-    @State private var nextButtonIsEnabled: Bool = false
+    @StateObject private var viewModel: IntroModel = .init()
     
     var body: some View {
         
         GeometryReader { geometry in
             
-            ZStack(alignment: .center) {
-                                
+            ZStack(alignment: .bottom) {
+                
                 Image("Woods")
                     .resizable()
                     .scaledToFill()
@@ -30,21 +26,21 @@ struct IntroView: View {
                     .opacity(0.7)
                     .overlay(
                         Color.black
-                            .opacity(showScene ? 0 : 1)
-                            .animation(.easeInOut(duration: 6), value: showScene)
+                            .opacity(viewModel.showScene ? 0 : 1)
+                            .animation(.easeInOut(duration: 6), value: viewModel.showScene)
                     )
                 
                 VStack(alignment: .center) {
                     
                     Spacer()
                     
-                    Text(currentPhase.text)
-                        .id(currentPhase)
+                    Text(viewModel.currentPhase.text)
+                        .id(viewModel.currentPhase)
                         .font(.system(size: 48))
                         .fontWidth(.expanded)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.white)
-                        .shadow(color: .accentColor, radius: showScene ? 10 : 5)
+                        .shadow(color: .accentColor, radius: viewModel.showScene ? 10 : 5)
                         .padding()
                         .background(Color.black.opacity(0.7))
                         .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -52,12 +48,12 @@ struct IntroView: View {
                     
                     Spacer()
                     
-                    if currentPhase != .phase1 {
+                    if viewModel.currentPhase != .phase1 {
                         
                         Image("Pyris")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 200)
+                            .frame(width: 150)
                             .shadow(color: .accentColor, radius: 10)
                             .padding(.bottom, 70)
                             .transition(.scale.animation(.easeInOut(duration: 2)))
@@ -66,15 +62,30 @@ struct IntroView: View {
                 .frame(width: geometry.size.width,
                        height: geometry.size.height)
                 
-                if nextButtonIsEnabled {
+                if viewModel.currentPhase == .phase5 {
+                    
+                    WindAnimationView()
+                        .offset(y: 150)
+                    
+                } else if viewModel.currentPhase == .phase4 {
+                    
+                    FlowersGroup(
+                        parentGeometry: geometry,
+                        flowersToTap: $viewModel.flowersToTap
+                    )
+                }
+                
+                if viewModel.nextButtonIsEnabled &&
+                    !(viewModel.currentPhase == .phase4
+                      && viewModel.flowersToTap != 0) {
                     
                     Button("Next", systemImage: "arrowshape.forward") {
-                        if let nextPhase = currentPhase.next {
-                            transition(to: nextPhase)
+                        if let nextPhase = viewModel.currentPhase.next {
+                            viewModel.transition(to: nextPhase)
                             
                         } else { setSceneMode(.game) }
                     }
-                    .id(currentPhase)
+                    .id(viewModel.currentPhase)
                     .font(.title2)
                     .fontWeight(.bold)
                     .buttonStyle(.borderedProminent)
@@ -84,73 +95,10 @@ struct IntroView: View {
                            alignment: .bottomTrailing)
                     .transition(.opacity.animation(.easeInOut(duration: 2)))
                 }
-                
-                if currentPhase == .phase5{
-                    WindAnimationView()
-                        .offset(y: 150)
-                }
             }
             .frame(width: geometry.size.width,
                    height: geometry.size.height)
         }
-        .onAppear { enableNext(currentPhase) }
-    }
-    
-    private func enableNext(_ phase: Phase) {
-        Task(priority: .userInitiated) { @MainActor in
-            try? await Task.sleep(
-                for: .seconds(phase == .phase3 ? 6 : 2)
-            )
-            withAnimation { nextButtonIsEnabled = true }
-        }
-    }
-    
-    private func transition(to phase: Phase) {
-        withAnimation {
-            nextButtonIsEnabled = false
-            currentPhase = phase
-        }
-        if phase == .phase3 { showScene = true }
-        enableNext(phase)
-    }
-}
-
-// MARK: - Supporting types
-
-extension IntroView {
-    
-    private enum Phase: Int, CaseIterable, Hashable {
-        
-        case phase1 = 1
-        case phase2 = 2
-        case phase3 = 3
-        case phase4 = 4
-        case phase5 = 5
-        case phase6 = 6
-        case phase7 = 7
-         
-        var text: String {
-            switch self {
-            case .phase1: "In the vast darkness, a tiny light appears"
-            case .phase2: "It's Pyris, glowing with joy"
-            case .phase3: "Bringing light to everything around her"
-            case .phase4: "So bright that awakes all the beauties of the woods"
-            case .phase5: "But suddenly... the wind starts blowing"
-            case .phase6: "Pyris fears the wind, starting losing control"
-            case .phase7: "The flames rage and endanger the forest"
-            }
-        }
-        
-        var next: Phase? {
-            switch self {
-            case .phase1: .phase2
-            case .phase2: .phase3
-            case .phase3: .phase4
-            case .phase4: .phase5
-            case .phase5: .phase6
-            case .phase6: .phase7
-            default: nil
-            }
-        }
+        .onAppear { viewModel.enableNext(viewModel.currentPhase) }
     }
 }

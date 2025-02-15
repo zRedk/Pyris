@@ -7,22 +7,28 @@
 import SwiftUI
 
 struct ProgressBar: View {
+    
     var progress: CGFloat
     
     var body: some View {
-        GeometryReader { geo in
+        
+        GeometryReader { geometry in
+       
             ZStack(alignment: .leading) {
-                Rectangle()
-                    .frame(width: geo.size.width, height: 10)
+        
+                Capsule()
+                    .frame(width: geometry.size.width, height: 25)
                     .opacity(0.3)
                     .foregroundColor(.gray)
-                Rectangle()
-                    .frame(width: geo.size.width * progress, height: 10)
+                
+                Capsule()
+                    .frame(width: geometry.size.width * progress, height: 25)
                     .foregroundColor(.accentColor)
                     .animation(.easeInOut, value: progress)
             }
             .cornerRadius(5)
         }
         .frame(height: 25)
+        .padding(.bottom)
     }
 }

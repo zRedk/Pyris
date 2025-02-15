@@ -63,9 +63,8 @@ struct GameView: View {
                     Image("Pyris")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 450 * viewModel.activityLevel)
+                        .frame(width: 400 * viewModel.activityLevel)
                         .animation(.easeInOut(duration: 0.5), value: viewModel.activityLevel)
-                    
                     
                     ProgressBar(progress: min(CGFloat(viewModel.blowingTime / viewModel.requiredBlowingTime), 1.0))
                         .frame(width: 600)
