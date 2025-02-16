@@ -24,7 +24,7 @@ enum IntroPhase: Int, CaseIterable, Hashable {
         case .phase3: "Bringing light to everything around her"
         case .phase4: "So bright that awakes all the beauties of the woods"
         case .phase5: "But suddenly... the wind starts blowing"
-        case .phase6: "Pyris fears the wind, starting losing control"
+        case .phase6: "Pyris fears the wind, starting to lose control"
         case .phase7: "The flames rage and endanger the forest"
         }
     }
