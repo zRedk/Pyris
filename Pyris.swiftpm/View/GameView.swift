@@ -63,12 +63,13 @@ struct GameView: View {
                     Image("PyrisFear")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 400 * viewModel.activityLevel)
+                        .frame(width: 150)
+                        .scaleEffect(2.5 * viewModel.activityLevel, anchor: .bottom)
                         .animation(.easeInOut(duration: 0.5), value: viewModel.activityLevel)
                     
-                    ProgressBar(progress: min(CGFloat(viewModel.blowingTime / viewModel.requiredBlowingTime), 1.0))
-                        .frame(width: 600)
-                        .padding()
+                   ProgressBar(progress: min(CGFloat(viewModel.blowingTime / viewModel.requiredBlowingTime), 1.0))
+                        .frame(width: 600, height: 50)
+                        .padding(.vertical, 32)
                 }
                 .onChange(of: viewModel.gameCompleted) { isCompleted in
                     if isCompleted { setSceneMode(.endGame) }

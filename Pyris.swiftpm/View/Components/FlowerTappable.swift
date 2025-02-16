@@ -9,9 +9,17 @@ import SwiftUI
 
 struct FlowerTappable: View {
     
-    enum FlowerColor: String {
-        case lilac = "LilacDaisy"
-        case white = "WhiteDaisy"
+    enum FlowerColor {
+        
+        case lilac
+        case white
+        
+        var assetName: String {
+            switch self {
+            case .lilac: "LilacDaisy"
+            case .white: "WhiteDaisy"
+            }
+        }
         
         var shadowColor: Color {
             switch self {
@@ -22,6 +30,8 @@ struct FlowerTappable: View {
     }
     
     let flowerColor: FlowerColor
+    
+    let isBurnt: Bool
     
     @State private var flowerIsShown: Bool = false
     
@@ -35,12 +45,14 @@ struct FlowerTappable: View {
             
             if flowerIsShown {
                 
-                Image(flowerColor.rawValue)
+                Image(flowerColor.assetName + (isBurnt ? "Burnt" : ""))
                     .resizable()
                     .scaledToFit()
-                    .shadow(color: flowerColor.shadowColor, radius: 5)
+                    .shadow(color: isBurnt ? .accentColor : flowerColor.shadowColor, radius: 5)
                     .frame(width: 70)
+                    .offset(x: isBurnt ? -10:0)
                     .transition(.move(edge: .bottom))
+                    .animation(.easeInOut(duration: 0.5), value: isBurnt)
                 
             } else {
                 

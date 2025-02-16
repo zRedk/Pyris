@@ -71,10 +71,13 @@ struct IntroView: View {
                             .frame(width: 150, alignment: .bottom)
                             .shadow(color: .accentColor, radius: 10)
                             .scaleEffect(assetSize, anchor: .bottom)
-                            .padding(.bottom, 70)
                             .transition(.scale.animation(.easeInOut(duration: 2)))
                             .animation(animation, value: assetSize)
                     }
+                    
+                    Spacer()
+                        .frame(height: 50)
+                        .padding(.vertical, 32)
                 }
                 .frame(width: geometry.size.width,
                        height: geometry.size.height)
@@ -100,7 +103,7 @@ struct IntroView: View {
                 
                 if viewModel.nextButtonIsEnabled &&
                     !(viewModel.currentPhase == .phase4
-                      && viewModel.flowersToTap != 0) {
+                      && viewModel.flowersToTap > 0) {
                     
                     Button("Next", systemImage: "arrowshape.forward") {
                         if let nextPhase = viewModel.currentPhase.next {

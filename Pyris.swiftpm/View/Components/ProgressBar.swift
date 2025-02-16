@@ -29,6 +29,5 @@ struct ProgressBar: View {
             .cornerRadius(5)
         }
         .frame(height: 25)
-        .padding(.bottom)
     }
 }

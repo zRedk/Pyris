@@ -17,57 +17,55 @@ struct FlowersGroup: View {
         
         HStack(alignment: .center) {
             
+            let animationValue: Bool = viewModel.currentPhase == .phase7 ?
+                false : viewModel.windIsBlowing
+            
+            let animation: Animation = viewModel.currentPhase == .phase7 ?
+                .linear(duration: 0) : .linear(duration: 2).repeatForever(autoreverses: true)
+            
             FlowerTappable(
                 flowerColor: .lilac,
+                isBurnt: viewModel.currentPhase == .phase7,
                 flowersToTap: $viewModel.flowersToTap
             )
             .padding(.bottom, 64)
-            .offset(x: viewModel.windIsBlowing ? 50: 0)
-            .rotationEffect(.degrees(viewModel.windIsBlowing ? 25: 0))
-            .animation(
-                .linear(duration: 2).repeatForever(autoreverses: true),
-                value: viewModel.windIsBlowing
-            )
+            .offset(x: animationValue ? 50: 0)
+            .rotationEffect(.degrees(animationValue ? 25: 0))
+            .animation(animation, value: animationValue)
             
             Spacer()
             
             FlowerTappable(
                 flowerColor: .white,
+                isBurnt: viewModel.currentPhase == .phase7,
                 flowersToTap: $viewModel.flowersToTap
             )
-            .offset(x: viewModel.windIsBlowing ? 25: 0)
-            .rotationEffect(.degrees(viewModel.windIsBlowing ? 25: 0))
-            .animation(
-                .linear(duration: 2).repeatForever(autoreverses: true),
-                value: viewModel.windIsBlowing
-            )
+            .offset(x: animationValue ? 25: 0)
+            .rotationEffect(.degrees(animationValue ? 25: 0))
+            .animation(animation, value: animationValue)
             
             Spacer()
             
             FlowerTappable(
                 flowerColor: .lilac,
+                isBurnt: viewModel.currentPhase == .phase7,
                 flowersToTap: $viewModel.flowersToTap
             )
             .padding(.bottom, 64)
-            .offset(x: viewModel.windIsBlowing ? 25: 0)
-            .rotationEffect(.degrees(viewModel.windIsBlowing ? 25: 0))
-            .animation(
-                .linear(duration: 2).repeatForever(autoreverses: true),
-                value: viewModel.windIsBlowing
-            )
+            .offset(x: animationValue ? 25: 0)
+            .rotationEffect(.degrees(animationValue ? 25: 0))
+            .animation(animation, value: animationValue)
             
             Spacer()
             
             FlowerTappable(
                 flowerColor: .white,
+                isBurnt: viewModel.currentPhase == .phase7,
                 flowersToTap: $viewModel.flowersToTap
             )
-            .offset(x: viewModel.windIsBlowing ? 25: 0)
-            .rotationEffect(.degrees(viewModel.windIsBlowing ? 25: 0))
-            .animation(
-                .linear(duration: 2).repeatForever(autoreverses: true),
-                value: viewModel.windIsBlowing
-            )
+            .offset(x: animationValue ? 25: 0)
+            .rotationEffect(.degrees(animationValue ? 25: 0))
+            .animation(animation, value: animationValue)
         }
         .padding(.horizontal, 64)
         .padding(.bottom)
