@@ -10,8 +10,8 @@ import SwiftUI
 struct FlowersGroup: View {
     
     let parentGeometry: GeometryProxy
-    
-    @Binding var flowersToTap: Int
+        
+    @ObservedObject var viewModel: IntroModel
     
     var body: some View {
         
@@ -19,30 +19,54 @@ struct FlowersGroup: View {
             
             FlowerTappable(
                 flowerColor: .lilac,
-                flowersToTap: $flowersToTap
+                flowersToTap: $viewModel.flowersToTap
             )
             .padding(.bottom, 64)
+            .offset(x: viewModel.windIsBlowing ? 50: 0)
+            .rotationEffect(.degrees(viewModel.windIsBlowing ? 25: 0))
+            .animation(
+                .linear(duration: 2).repeatForever(autoreverses: true),
+                value: viewModel.windIsBlowing
+            )
             
             Spacer()
             
             FlowerTappable(
                 flowerColor: .white,
-                flowersToTap: $flowersToTap
+                flowersToTap: $viewModel.flowersToTap
+            )
+            .offset(x: viewModel.windIsBlowing ? 25: 0)
+            .rotationEffect(.degrees(viewModel.windIsBlowing ? 25: 0))
+            .animation(
+                .linear(duration: 2).repeatForever(autoreverses: true),
+                value: viewModel.windIsBlowing
             )
             
             Spacer()
             
             FlowerTappable(
                 flowerColor: .lilac,
-                flowersToTap: $flowersToTap
+                flowersToTap: $viewModel.flowersToTap
             )
             .padding(.bottom, 64)
+            .offset(x: viewModel.windIsBlowing ? 25: 0)
+            .rotationEffect(.degrees(viewModel.windIsBlowing ? 25: 0))
+            .animation(
+                .linear(duration: 2).repeatForever(autoreverses: true),
+                value: viewModel.windIsBlowing
+            )
             
             Spacer()
             
             FlowerTappable(
                 flowerColor: .white,
-                flowersToTap: $flowersToTap
+                flowersToTap: $viewModel.flowersToTap
+            )
+            .offset(x: viewModel.windIsBlowing ? 25: 0)
+            .rotationEffect(.degrees(viewModel.windIsBlowing ? 25: 0))
+            .animation(
+                .linear(duration: 2).repeatForever(autoreverses: true),
+                value: viewModel.windIsBlowing
             )
         }
         .padding(.horizontal, 64)

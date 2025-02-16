@@ -40,4 +40,28 @@ enum IntroPhase: Int, CaseIterable, Hashable {
         default: nil
         }
     }
+    
+    var pyrisAssetName: String? {
+        switch self {
+        case .phase1: nil
+        case .phase2: "Pyris"
+        case .phase3: "Pyris"
+        case .phase4: "Pyris"
+        case .phase5: "PyrisFear"
+        case .phase6: "PyrisFear"
+        case .phase7: "PyrisFear"
+        }
+    }
+    
+    var pyrisAssetSize: CGFloat? {
+        switch self {
+        case .phase1: nil
+        case .phase2: 1
+        case .phase3: 1
+        case .phase4: 1
+        case .phase5: 1
+        case .phase6: 1.3
+        case .phase7: 2.5
+        }
+    }
 }

@@ -60,7 +60,7 @@ struct GameView: View {
                             .animation(.easeInOut(duration: 0.5), value: viewModel.motivationalMessage)
                     }
                     
-                    Image("Pyris")
+                    Image("PyrisFear")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 400 * viewModel.activityLevel)

@@ -24,15 +24,25 @@ struct IntroView: View {
                     .frame(width: geometry.size.width,
                            height: geometry.size.height)
                     .opacity(0.7)
-                    .overlay(
+                    .overlay {
                         Color.black
                             .opacity(viewModel.showScene ? 0 : 1)
                             .animation(.easeInOut(duration: 6), value: viewModel.showScene)
-                    )
+                    }
+                    .overlay {
+                        LinearGradient(
+                            colors: [.init("FireColor"), .clear],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                        .opacity(viewModel.currentPhase == .phase7 ? 0.5 : 0)
+                        .animation(.easeInOut, value: viewModel.currentPhase)
+                    }
                 
                 VStack(alignment: .center) {
                     
                     Spacer()
+                        .frame(maxHeight:100)
                     
                     Text(viewModel.currentPhase.text)
                         .id(viewModel.currentPhase)
@@ -48,15 +58,22 @@ struct IntroView: View {
                     
                     Spacer()
                     
-                    if viewModel.currentPhase != .phase1 {
+                    if let assetName = viewModel.currentPhase.pyrisAssetName,
+                       let assetSize = viewModel.currentPhase.pyrisAssetSize {
                         
-                        Image("Pyris")
+                        let animation: Animation = viewModel.currentPhase == .phase7 ?
+                            .easeInOut(duration: 3):
+                            .easeInOut(duration: 3).repeatForever(autoreverses: true)
+                        
+                        Image(assetName)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 150)
+                            .frame(width: 150, alignment: .bottom)
                             .shadow(color: .accentColor, radius: 10)
+                            .scaleEffect(assetSize, anchor: .bottom)
                             .padding(.bottom, 70)
                             .transition(.scale.animation(.easeInOut(duration: 2)))
+                            .animation(animation, value: assetSize)
                     }
                 }
                 .frame(width: geometry.size.width,
@@ -66,12 +83,18 @@ struct IntroView: View {
                     
                     WindAnimationView()
                         .offset(y: 150)
-                    
-                } else if viewModel.currentPhase == .phase4 {
+                        .onAppear {
+                            withAnimation {
+                                viewModel.windIsBlowing = true
+                            }
+                        }
+                }
+                
+                if viewModel.currentPhase.rawValue >= IntroPhase.phase4.rawValue {
                     
                     FlowersGroup(
                         parentGeometry: geometry,
-                        flowersToTap: $viewModel.flowersToTap
+                        viewModel: viewModel
                     )
                 }
                 

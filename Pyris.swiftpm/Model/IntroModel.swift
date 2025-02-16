@@ -18,6 +18,8 @@ final class IntroModel: ObservableObject {
     
     @Published var flowersToTap: Int = 4
     
+    @Published var windIsBlowing: Bool = false
+    
     func enableNext(_ phase: IntroPhase) {
         Task(priority: .userInitiated) { @MainActor in
             try? await Task.sleep(
