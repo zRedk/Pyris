@@ -1,20 +1,10 @@
 import SwiftUI
-import AVFoundation
 
 struct GameView: View {
     
     @EnvironmentObject private var viewModel: ViewModel
     
     @Environment(\.setSceneMode) private var setSceneMode
-    
-    private var backgroundImage: String {
-        switch viewModel.currentSession {
-        case 1: "background_fire"
-        case 2: "background_fire_low"
-        case 3: "background_fire_lowest"
-        default: "background"
-        }
-    }
     
     var body: some View {
         
