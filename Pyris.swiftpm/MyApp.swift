@@ -18,6 +18,7 @@ struct MyApp: App {
                 switch currentSceneMode{
                 case .launch: LauchView()
                 case .intro: IntroView()
+                case .tutorial: TutorialView()
                 case .game: GameView()
                 case .endGame: EndGameView()
                 }

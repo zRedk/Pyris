@@ -109,7 +109,7 @@ struct IntroView: View {
                         if let nextPhase = viewModel.currentPhase.next {
                             viewModel.transition(to: nextPhase)
                         } else {
-                            setSceneMode(.game)
+                            setSceneMode(.tutorial)
                         }
                     }
                     .id(viewModel.currentPhase)
