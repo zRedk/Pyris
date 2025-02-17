@@ -105,33 +105,14 @@ struct IntroView: View {
                     !(viewModel.currentPhase == .phase4
                       && viewModel.flowersToTap > 0) {
                     
-                    Button {
+                    CustomButton(isLaunchButton: false) {
                         if let nextPhase = viewModel.currentPhase.next {
                             viewModel.transition(to: nextPhase)
                         } else {
                             setSceneMode(.game)
                         }
-                    } label: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 15)
-                                .fill(Color.accentColor.opacity(0.8))
-                                .frame(width: 150, height: 60)
-                                .shadow(radius: 8)
-                            
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color.accentColor)
-                                .frame(width: 130, height: 40)
-
-                            HStack(spacing: 10) {
-                                Text("Next")
-                                    .font(.title2)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                            }
-                        }
                     }
                     .id(viewModel.currentPhase)
-                    .buttonStyle(.plain)
                     .padding(64)
                     .frame(width: geometry.size.width,
                            height: geometry.size.height,
