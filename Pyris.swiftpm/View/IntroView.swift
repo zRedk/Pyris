@@ -1,6 +1,6 @@
 //
 //  IntroView.swift
-//  calcifer
+//  Pyris
 //
 //  Created by Federica Mosca on 08/02/25.
 //
@@ -105,21 +105,39 @@ struct IntroView: View {
                     !(viewModel.currentPhase == .phase4
                       && viewModel.flowersToTap > 0) {
                     
-                    Button("Next", systemImage: "arrowshape.forward") {
+                    Button {
                         if let nextPhase = viewModel.currentPhase.next {
                             viewModel.transition(to: nextPhase)
+                        } else {
+                            setSceneMode(.game)
+                        }
+                    } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 15)
+                                .fill(Color.accentColor.opacity(0.8))
+                                .frame(width: 150, height: 60)
+                                .shadow(radius: 8)
                             
-                        } else { setSceneMode(.game) }
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color.accentColor)
+                                .frame(width: 130, height: 40)
+
+                            HStack(spacing: 10) {
+                                Text("Next")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                            }
+                        }
                     }
                     .id(viewModel.currentPhase)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.plain)
                     .padding(64)
                     .frame(width: geometry.size.width,
                            height: geometry.size.height,
                            alignment: .bottomTrailing)
                     .transition(.opacity.animation(.easeInOut(duration: 2)))
+
                 }
             }
             .frame(width: geometry.size.width,

@@ -1,6 +1,6 @@
 //
 //  EndGameView.swift
-//  calcifer
+//  Pyris
 //
 //  Created by Federica Mosca on 01/02/25.
 //

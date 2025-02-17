@@ -53,6 +53,7 @@ struct GameView: View {
                     Image("PyrisFear")
                         .resizable()
                         .scaledToFit()
+                        .shadow(color: .accentColor, radius: 10)
                         .frame(width: 150)
                         .scaleEffect(2.5 * viewModel.activityLevel, anchor: .bottom)
                         .animation(.easeInOut(duration: 0.5), value: viewModel.activityLevel)

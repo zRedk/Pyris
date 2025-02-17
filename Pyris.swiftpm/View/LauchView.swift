@@ -1,6 +1,6 @@
 //
 //  LauchView.swift
-//  calcifer
+//  Pyris
 //
 //  Created by Federica Mosca on 08/02/25.
 //
@@ -26,24 +26,36 @@ struct LauchView: View {
                 
                 VStack(spacing: 120) {
                     
-                    Text("Pyris")
-                        .font(.system(size: 72))
-                        .fontWidth(.expanded)
-                        .foregroundStyle(.white)
-                        .shadow(color: .accentColor, radius: 10)
-                        .padding()
-                        .background(Color.black.opacity(0.4))
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                    Image("Logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 500)
+                        .shadow(color: .black, radius: 10)
                     
-                    Button("Start the experience", systemImage: "play") {
+                    Button {
                         withAnimation {
                             setSceneMode(.intro)
                         }
+                    } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(Color.accentColor.opacity(0.8))
+                                .frame(width: 200, height: 80)
+                                .shadow(radius: 8)
+                            
+                            RoundedRectangle(cornerRadius: 15)
+                                .fill(Color.accentColor)
+                                .frame(width: 180, height: 60)
+                            
+                            VStack {
+                                Text("START")
+                                    .fontWeight(.bold)
+                                    .fontWidth(.expanded)
+                                    .foregroundColor(.white)
+                            }
+                        }
                     }
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .buttonStyle(.borderedProminent)
-                    .scaleEffect(1.5)
+                    .buttonStyle(.plain)
                 }
             }
         }
