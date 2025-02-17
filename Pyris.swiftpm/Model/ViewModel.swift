@@ -28,7 +28,7 @@ class ViewModel: ObservableObject {
 
     
     private func startTimer() {
-        stopTimer()  // Assicura che un vecchio timer non interferisca
+        stopTimer()
         
         let newTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
         newTimer.schedule(deadline: .now(), repeating: 0.1)

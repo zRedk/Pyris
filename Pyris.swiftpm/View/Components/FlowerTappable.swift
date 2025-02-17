@@ -92,7 +92,6 @@ struct PulsatingButton: View {
 
     var body: some View {
         ZStack {
-            // Effetto di pulsazione continua
             Circle()
                 .fill(Color.blue.opacity(0.5))
                 .frame(width: 80, height: 80)

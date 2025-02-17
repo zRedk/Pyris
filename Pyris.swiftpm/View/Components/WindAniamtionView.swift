@@ -96,16 +96,10 @@ struct WindPath: Shape {
         let width = rect.width
         let height = rect.height
         
-        // Partenza: bordo sinistro, centro verticale
         path.move(to: CGPoint(x: 0, y: height * 0.5))
-        // Arrivo: bordo destro, centro verticale
-        // I control point sono stati riposizionati per garantire una curva armoniosa su tutto il percorso
         path.addCurve(to: CGPoint(x: width, y: height * 0.5),
                       control1: CGPoint(x: width * 0.25, y: 0),
                       control2: CGPoint(x: width * 0.75, y: height))
-        
-        // La funzione trimmedPath prende valori tra 0 e 1 che rappresentano la lunghezza totale del percorso.
-        // Qui si disegna una porzione dinamica del percorso basata sul valore di progress.
         let start = max(0, progress - 0.1)
         return path.trimmedPath(from: start, to: progress)
     }
