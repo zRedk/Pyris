@@ -25,7 +25,7 @@ enum TutorialPhase {
     
     var body: String {
         switch self {
-        case .phase1: "When panic strikes, your heart races—just like Pyris’s does now. Use your breath to help shrink Pyris and tame the tempest."
+        case .phase1: "When panic strikes, your heart races just like Pyris does now. Use your breath to help shrink Pyris and tame the tempest."
         case .phase2: "Inhale slowly through your nose, hold your breath counting to four, blow gently into the microphone."
         }
     }
