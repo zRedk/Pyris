@@ -95,7 +95,7 @@ struct IntroView: View {
                 
                 if viewModel.currentPhase.rawValue >= IntroPhase.phase4.rawValue {
                     
-                    FlowersGroup(
+                    FlowersTapGroup(
                         parentGeometry: geometry,
                         viewModel: viewModel
                     )
@@ -105,7 +105,7 @@ struct IntroView: View {
                     !(viewModel.currentPhase == .phase4
                       && viewModel.flowersToTap > 0) {
                     
-                    CustomButton(isLaunchButton: false) {
+                    CustomButton(buttonType: .next) {
                         if let nextPhase = viewModel.currentPhase.next {
                             viewModel.transition(to: nextPhase)
                         } else {

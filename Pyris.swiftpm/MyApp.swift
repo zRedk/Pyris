@@ -32,6 +32,11 @@ struct MyApp: App {
     }
     
     private func setSceneMode(_ mode: SceneMode) {
+        
+        if mode == .launch {
+            viewModel.reset()
+        }
+        
         currentSceneMode = mode
     }
 }

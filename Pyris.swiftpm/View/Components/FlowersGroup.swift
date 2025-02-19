@@ -10,62 +10,50 @@ import SwiftUI
 struct FlowersGroup: View {
     
     let parentGeometry: GeometryProxy
-        
-    @ObservedObject var viewModel: IntroModel
-    
+            
     var body: some View {
         
         HStack(alignment: .center) {
             
-            let animationValue: Bool = viewModel.currentPhase == .phase7 ?
-                false : viewModel.windIsBlowing
-            
-            let animation: Animation = viewModel.currentPhase == .phase7 ?
-                .linear(duration: 0) : .linear(duration: 2).repeatForever(autoreverses: true)
-            
-            FlowerTappable(
-                flowerColor: .lilac,
-                isBurnt: viewModel.currentPhase == .phase7,
-                flowersToTap: $viewModel.flowersToTap
-            )
-            .padding(.bottom, 64)
-            .offset(x: animationValue ? 50: 0)
-            .rotationEffect(.degrees(animationValue ? 25: 0))
-            .animation(animation, value: animationValue)
+            Image(FlowerColor.lilac.assetName)
+                .resizable()
+                .scaledToFit()
+                .shadow(color: FlowerColor.lilac.shadowColor, radius: 5)
+                .frame(width: 70)
+                .transition(.move(edge: .bottom))
+                .padding(.bottom, 64)
+                .offset(x: 50)
             
             Spacer()
             
-            FlowerTappable(
-                flowerColor: .white,
-                isBurnt: viewModel.currentPhase == .phase7,
-                flowersToTap: $viewModel.flowersToTap
-            )
-            .offset(x: animationValue ? 25: 0)
-            .rotationEffect(.degrees(animationValue ? 25: 0))
-            .animation(animation, value: animationValue)
+            Image(FlowerColor.white.assetName)
+                .resizable()
+                .scaledToFit()
+                .shadow(color: FlowerColor.white.shadowColor, radius: 5)
+                .frame(width: 70)
+                .transition(.move(edge: .bottom))
+                .offset(x: 25)
             
             Spacer()
             
-            FlowerTappable(
-                flowerColor: .lilac,
-                isBurnt: viewModel.currentPhase == .phase7,
-                flowersToTap: $viewModel.flowersToTap
-            )
-            .padding(.bottom, 64)
-            .offset(x: animationValue ? 25: 0)
-            .rotationEffect(.degrees(animationValue ? 25: 0))
-            .animation(animation, value: animationValue)
+            Image(FlowerColor.lilac.assetName)
+                .resizable()
+                .scaledToFit()
+                .shadow(color: FlowerColor.lilac.shadowColor, radius: 5)
+                .frame(width: 70)
+                .transition(.move(edge: .bottom))
+                .padding(.bottom, 64)
+                .offset(x: 50)
             
             Spacer()
             
-            FlowerTappable(
-                flowerColor: .white,
-                isBurnt: viewModel.currentPhase == .phase7,
-                flowersToTap: $viewModel.flowersToTap
-            )
-            .offset(x: animationValue ? 25: 0)
-            .rotationEffect(.degrees(animationValue ? 25: 0))
-            .animation(animation, value: animationValue)
+            Image(FlowerColor.white.assetName)
+                .resizable()
+                .scaledToFit()
+                .shadow(color: FlowerColor.white.shadowColor, radius: 5)
+                .frame(width: 70)
+                .transition(.move(edge: .bottom))
+                .offset(x: 25)
         }
         .padding(.horizontal, 64)
         .padding(.bottom)

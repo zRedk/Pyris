@@ -32,7 +32,7 @@ struct LauchView: View {
                         .frame(width: 500)
                         .shadow(color: .black, radius: 10)
                     
-                    CustomButton(isLaunchButton: true) {
+                    CustomButton(buttonType: .start) {
                         withAnimation {
                             setSceneMode(.intro)
                         }

@@ -44,7 +44,7 @@ struct TutorialView: View {
                 }
                 .padding(.horizontal)
                 
-                CustomButton(isLaunchButton: false) {
+                CustomButton(buttonType: .next) {
                     withAnimation {
                         if let nextPhase = currentPhase.next {
                             currentPhase = nextPhase

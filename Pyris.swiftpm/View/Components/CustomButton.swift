@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CustomButton: View {
     
-    let isLaunchButton: Bool
+    let buttonType: ButtonType
     
     let action: @MainActor () -> Void
     
@@ -19,18 +19,18 @@ struct CustomButton: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 15)
                     .fill(Color.accentColor.opacity(0.8))
-                    .frame(width: isLaunchButton ? 200:150,
-                           height: isLaunchButton ? 80:60)
+                    .frame(width: buttonType.outerSize.width,
+                           height: buttonType.outerSize.height)
                     .shadow(radius: 8)
                 
                 RoundedRectangle(cornerRadius: 10)
                     .fill(Color.accentColor)
-                    .frame(width: isLaunchButton ? 180:130,
-                           height: isLaunchButton ? 60:40)
+                    .frame(width: buttonType.innerSize.width,
+                           height: buttonType.innerSize.height)
                 
                 HStack(spacing: 10) {
                     
-                    Text(isLaunchButton ? "START":"Next")
+                    Text(buttonType.text)
                         .font(.title2)
                         .fontWidth(.expanded)
                         .fontWeight(.bold)

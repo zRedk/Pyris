@@ -28,6 +28,20 @@ final class ViewModel: ObservableObject {
     @Published var gameViewIsShown: Bool = true
     @Published var isFirstInfraGameShown: Bool = false
     
+    func reset() {
+        audioService.stopRecording()
+        timer?.cancel()
+        timer = nil
+        blowingTime = 0.0
+        activityLevel = 0.0
+        currentSession = 1
+        currentSessionIsInteractive = false
+        gameCompleted = false
+        inactiveTime = 0.0
+        gameViewIsShown = true
+        isFirstInfraGameShown = false
+    }
+    
     private func startTimer() {
         stopTimer()
         

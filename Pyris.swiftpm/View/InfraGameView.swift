@@ -65,7 +65,7 @@ struct InfraGameView: View {
                     Spacer()
                 }
                 
-                CustomButton(isLaunchButton: false) {
+                CustomButton(buttonType: .next) {
                     if viewModel.currentSession == 1 {
                         viewModel.currentSessionIsInteractive.toggle()
                     }

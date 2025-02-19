@@ -48,4 +48,9 @@ final class AudioService: Sendable {
         
         await MainActor.run { self.audioRecorder = audioRecorder }
     }
+    
+    @MainActor func stopRecording() {
+        audioRecorder?.stop()
+        audioRecorder = nil
+    }
 }
