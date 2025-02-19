@@ -1,3 +1,10 @@
+//
+//  GameView.swift
+//  Pyris
+//
+//  Created by Federica Mosca on 29/01/25.
+//
+
 import SwiftUI
 
 struct GameView: View {
@@ -7,6 +14,8 @@ struct GameView: View {
     @Environment(\.setSceneMode) private var setSceneMode
     
     @State private var progress: CGFloat = 0
+    
+    @State private var currentError: Error?
     
     var body: some View {
         
@@ -66,6 +75,12 @@ struct GameView: View {
                         .frame(width: 600, height: 50)
                         .padding(.vertical, 32)
                 }
+                .onAppear {
+                    if viewModel.currentSession == 1 &&
+                       viewModel.currentSessionIsInteractive {
+                        progress = 1.0
+                    }
+                }
                 .onChange(of: viewModel.currentSession) { _ in
                     setSceneMode(.infraGame)
                 }
@@ -86,7 +101,9 @@ struct GameView: View {
                 if viewModel.currentSession == 1 &&
                    !viewModel.currentSessionIsInteractive &&
                    !viewModel.isFirstInfraGameShown {
-                    await viewModel.startActivity()
+                    
+                    do { try await viewModel.startActivity() }
+                    catch { currentError = error; return }
                 }
                 
                 viewModel.isFirstInfraGameShown = false
@@ -108,7 +125,9 @@ struct GameView: View {
                     }
                 }
             }
-            
+            .alert("Error", isPresented: .constant(currentError != nil)) {
+                Button("I Understand.") { setSceneMode(.launch) }
+            } message: { Text(currentError?.localizedDescription ?? "") }
         }
     }
 }

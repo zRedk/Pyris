@@ -1,9 +1,10 @@
 //
 //  ProgressBar.swift
-//  calcifer
+//  Pyris
 //
 //  Created by Federica Mosca on 01/02/25.
 //
+
 import SwiftUI
 
 struct ProgressBar: View {

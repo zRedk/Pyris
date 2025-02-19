@@ -140,8 +140,3 @@ struct EndGameView: View {
         }
     }
 }
-
-#Preview {
-    EndGameView()
-        .ignoresSafeArea()
-}

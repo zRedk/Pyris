@@ -7,31 +7,36 @@
 
 import AVFoundation
 
-final class AudioService: Sendable {
-    
-    private let audioSession: AVAudioSession = .sharedInstance()
-    
-    @MainActor var audioRecorder: AVAudioRecorder?
-    
-    func requestPermission() async -> Bool {
+@MainActor
+final class AudioService {
         
-        await withCheckedContinuation { continuation in
+    var audioRecorder: AVAudioRecorder?
+    
+    func requestPermission() async throws {
+        
+        return try await withCheckedThrowingContinuation { continuation in
             
-            audioSession.requestRecordPermission {
-                continuation.resume(returning: $0)
+            AVAudioSession.sharedInstance().requestRecordPermission {
+                $0 ? continuation.resume() :
+                     continuation.resume(
+                        throwing: AudioError.permissionDenied
+                     )
             }
         }
     }
     
-    func setupRecording() async throws {
+    func setupRecording() throws {
                 
-        try audioSession.setCategory(
+        try AVAudioSession.sharedInstance().setCategory(
             .playAndRecord,
             mode: .measurement,
             options: .defaultToSpeaker
         )
         
-        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        try AVAudioSession.sharedInstance().setActive(
+            true,
+            options: .notifyOthersOnDeactivation
+        )
         
         let url = URL(fileURLWithPath: "/dev/null")
        
@@ -46,10 +51,10 @@ final class AudioService: Sendable {
         audioRecorder.prepareToRecord()
         audioRecorder.record()
         
-        await MainActor.run { self.audioRecorder = audioRecorder }
+        self.audioRecorder = audioRecorder
     }
     
-    @MainActor func stopRecording() {
+    func stopRecording() {
         audioRecorder?.stop()
         audioRecorder = nil
     }

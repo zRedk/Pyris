@@ -1,5 +1,5 @@
 //
-//  Wind.swift
+//  WindAnimation.swift
 //  Pyris
 //
 //  Created by Federica Mosca on 15/02/25.
@@ -9,7 +9,29 @@ import SwiftUI
 
 import Combine
 
-struct WindAnimationView: View {
+struct WindAnimation: View {
+    
+    private struct WindPath: Shape {
+        var progress: CGFloat
+        
+        var animatableData: CGFloat {
+            get { progress }
+            set { progress = newValue }
+        }
+        
+        func path(in rect: CGRect) -> Path {
+            var path = Path()
+            let width = rect.width
+            let height = rect.height
+            
+            path.move(to: CGPoint(x: 0, y: height * 0.5))
+            path.addCurve(to: CGPoint(x: width, y: height * 0.5),
+                          control1: CGPoint(x: width * 0.25, y: 0),
+                          control2: CGPoint(x: width * 0.75, y: height))
+            let start = max(0, progress - 0.1)
+            return path.trimmedPath(from: start, to: progress)
+        }
+    }
     
     private struct WindMetaData: Identifiable {
         let id: UUID = UUID()
@@ -80,27 +102,5 @@ struct WindAnimationView: View {
                 }
             }
         }
-    }
-}
-
-struct WindPath: Shape {
-    var progress: CGFloat
-    
-    var animatableData: CGFloat {
-        get { progress }
-        set { progress = newValue }
-    }
-    
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        let width = rect.width
-        let height = rect.height
-        
-        path.move(to: CGPoint(x: 0, y: height * 0.5))
-        path.addCurve(to: CGPoint(x: width, y: height * 0.5),
-                      control1: CGPoint(x: width * 0.25, y: 0),
-                      control2: CGPoint(x: width * 0.75, y: height))
-        let start = max(0, progress - 0.1)
-        return path.trimmedPath(from: start, to: progress)
     }
 }

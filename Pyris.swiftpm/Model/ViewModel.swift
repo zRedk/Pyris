@@ -106,18 +106,10 @@ final class ViewModel: ObservableObject {
     }
 
     
-    func startActivity() async {
-        guard await audioService.requestPermission() else {
-            print("Could not acquire permission to start recording")
-            return
-        }
+    func startActivity() async throws {
         
-        do {
-            try await audioService.setupRecording()
-        } catch {
-            print("Could not start Audio monitoring: \(error)")
-            return
-        }
+        try await audioService.requestPermission()
+        try audioService.setupRecording()
         
         currentSession = 1
         activityLevel = 1

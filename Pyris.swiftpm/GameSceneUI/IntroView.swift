@@ -4,6 +4,7 @@
 //
 //  Created by Federica Mosca on 08/02/25.
 //
+
 import SwiftUI
 
 struct IntroView: View {
@@ -84,7 +85,7 @@ struct IntroView: View {
                 
                 if viewModel.currentPhase == .phase5 {
                     
-                    WindAnimationView()
+                    WindAnimation()
                         .offset(y: 150)
                         .onAppear {
                             withAnimation {
@@ -113,6 +114,7 @@ struct IntroView: View {
                         }
                     }
                     .id(viewModel.currentPhase)
+                    .disabled(!viewModel.nextButtonIsEnabled)
                     .padding(64)
                     .frame(width: geometry.size.width,
                            height: geometry.size.height,
