@@ -16,7 +16,7 @@ let package = Package(
         .iOSApplication(
             name: "Pyris",
             targets: ["AppModule"],
-            bundleIdentifier: "com.federicamosca.calcifer",
+            bundleIdentifier: "com.federicamosca.Pyris",
             teamIdentifier: "52J8PJ423S",
             displayVersion: "1.0",
             bundleVersion: "1",
