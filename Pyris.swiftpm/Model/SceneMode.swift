@@ -16,6 +16,7 @@ enum SceneMode: Equatable {
     case launch
     case intro
     case tutorial
+    case infraGame
     case game
     case endGame
 }

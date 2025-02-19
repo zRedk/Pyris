@@ -24,7 +24,6 @@ struct ProgressBar: View {
                 Capsule()
                     .frame(width: geometry.size.width * progress, height: 25)
                     .foregroundColor(.accentColor)
-                    .animation(.easeInOut, value: progress)
             }
             .cornerRadius(5)
         }

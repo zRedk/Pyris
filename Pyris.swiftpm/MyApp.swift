@@ -19,6 +19,7 @@ struct MyApp: App {
                 case .launch: LauchView()
                 case .intro: IntroView()
                 case .tutorial: TutorialView()
+                case .infraGame: InfraGameView()
                 case .game: GameView()
                 case .endGame: EndGameView()
                 }

@@ -6,6 +6,8 @@ struct GameView: View {
     
     @Environment(\.setSceneMode) private var setSceneMode
     
+    @State private var progress: CGFloat = 0
+    
     var body: some View {
         
         GeometryReader { geometry in
@@ -38,17 +40,19 @@ struct GameView: View {
                 VStack {
                     
                     Spacer()
+                        .frame(maxHeight:100)
                     
-                    if let message = viewModel.motivationalMessage {
-                        Text(message)
-                            .font(.title2)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.black.opacity(0.7))
-                            .cornerRadius(10)
-                            .transition(.opacity)
-                            .animation(.easeInOut(duration: 0.5), value: viewModel.motivationalMessage)
-                    }
+                    Text(viewModel.currentSessionIsInteractive ? "Blow" : "Inhale")
+                        .font(.system(size: 48))
+                        .fontWidth(.expanded)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.white)
+                        .shadow(color: .accentColor, radius: 10)
+                        .padding()
+                        .background(Color.black.opacity(0.7))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                    
+                    Spacer()
                     
                     Image("PyrisFear")
                         .resizable()
@@ -58,28 +62,51 @@ struct GameView: View {
                         .scaleEffect(2.5 * viewModel.activityLevel, anchor: .bottom)
                         .animation(.easeInOut(duration: 0.5), value: viewModel.activityLevel)
                     
-                   ProgressBar(progress: min(CGFloat(viewModel.blowingTime / viewModel.requiredBlowingTime), 1.0))
+                    ProgressBar(progress: progress)
                         .frame(width: 600, height: 50)
                         .padding(.vertical, 32)
+                }
+                .onChange(of: viewModel.currentSession) { _ in
+                    setSceneMode(.infraGame)
+                }
+                .onChange(of: viewModel.blowingTime) { newValue in
+                    if viewModel.currentSessionIsInteractive {
+                        withAnimation(.easeInOut) {
+                            progress = 1.0 - min(CGFloat(viewModel.blowingTime / viewModel.requiredBlowingTime), 1.0)
+                        }
+                    }
                 }
                 .onChange(of: viewModel.gameCompleted) { isCompleted in
                     if isCompleted { setSceneMode(.endGame) }
                 }
                 
-                WindAnimationView(
-                    shouldRepeat: true,
-                    slowMultiplier: min(0.6 * Double(viewModel.currentSession), 1.5)
-                )
-                .offset(y: 50)
-                
-                WindAnimationView(
-                    shouldRepeat: true,
-                    slowMultiplier: min(0.6 * Double(viewModel.currentSession), 1.5)
-                )
-                .offset(y: 150)
             }
             .task(priority: .userInitiated) { @MainActor in
-                await viewModel.startActivity()
+                
+                if viewModel.currentSession == 1 &&
+                   !viewModel.currentSessionIsInteractive &&
+                   !viewModel.isFirstInfraGameShown {
+                    await viewModel.startActivity()
+                }
+                
+                viewModel.isFirstInfraGameShown = false
+                viewModel.gameViewIsShown = true
+                
+                if !viewModel.currentSessionIsInteractive {
+                    
+                    withAnimation(.easeInOut(duration: 5.0)) {
+                        progress = 1.0
+                    }
+                    
+                    try? await Task.sleep(for: .seconds(5))
+                    
+                    if viewModel.currentSession == 1 {
+                        viewModel.isFirstInfraGameShown = true
+                        setSceneMode(.infraGame)
+                    } else {
+                        viewModel.currentSessionIsInteractive = true
+                    }
+                }
             }
             
         }

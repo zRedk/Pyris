@@ -19,20 +19,7 @@ struct TutorialView: View {
             
             ZStack {
                 
-                Image("Woods")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: geometry.size.width,
-                           height: geometry.size.height)
-                    .opacity(0.7)
-                    .overlay {
-                        LinearGradient(
-                            colors: [.init("FireColor"), .clear],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                        .opacity(0.5)
-                    }
+                Color.black
                 
                 VStack(alignment: .center) {
                     
@@ -44,22 +31,15 @@ struct TutorialView: View {
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.white)
                         .shadow(color: .accentColor, radius: 10)
-                        .padding()
-                        .background(Color.black.opacity(0.7))
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
                     
                     Spacer()
                         .frame(maxHeight:100)
                     
-                    Text(currentPhase.body)
+                    currentPhase.body
                         .font(.system(size: 32))
                         .fontWidth(.expanded)
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(.white)
-                        .padding()
-                        .background(Color.black.opacity(0.5))
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
                         .padding(.horizontal, 64)
+                    
                     Spacer()
                 }
                 .padding(.horizontal)

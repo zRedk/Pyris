@@ -19,13 +19,13 @@ enum IntroPhase: Int, CaseIterable, Hashable {
     
     var text: String {
         switch self {
-        case .phase1: "In the vast darkness, a tiny light appears"
-        case .phase2: "It's Pyris, glowing with joy"
-        case .phase3: "Bringing light to everything around her"
-        case .phase4: "So bright that awakes all the beauties of the woods"
-        case .phase5: "But suddenly... the wind starts blowing"
+        case .phase1: "in the vast darkness, a tiny light appears"
+        case .phase2: "it's Pyris, glowing with joy"
+        case .phase3: "bringing light to everything around her"
+        case .phase4: "so bright that awakes the beauty of nature"
+        case .phase5: "but suddenly... the wind starts blowing"
         case .phase6: "Pyris fears the wind, starting to lose control"
-        case .phase7: "The flames rage and endanger the forest"
+        case .phase7: "the flames rage and endanger the forest"
         }
     }
     

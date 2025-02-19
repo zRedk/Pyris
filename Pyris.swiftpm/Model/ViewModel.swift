@@ -8,10 +8,10 @@
 import SwiftUI
 
 @MainActor
-class ViewModel: ObservableObject {
+final class ViewModel: ObservableObject {
     
     private let audioService = AudioService()
-    private let activityUpdateThreshold: Float = -45
+    private let activityUpdateThreshold: Float = -35
     let requiredBlowingTime: TimeInterval = 3.0
     let maxSessions = 3
     let maxInactiveTime: TimeInterval = 4.0
@@ -20,12 +20,13 @@ class ViewModel: ObservableObject {
     private var lastUpdateTime: Date?
     
     @Published var blowingTime: TimeInterval = 0.0
-    @Published var activityLevel: CGFloat = 1
-    @Published var currentSession = 1
+    @Published var activityLevel: CGFloat = 0.0
+    @Published var currentSession: Int = 1
+    @Published var currentSessionIsInteractive: Bool = false
     @Published var gameCompleted: Bool = false
     @Published var inactiveTime: TimeInterval = 0.0
-    @Published var motivationalMessage: String? = nil
-
+    @Published var gameViewIsShown: Bool = true
+    @Published var isFirstInfraGameShown: Bool = false
     
     private func startTimer() {
         stopTimer()
@@ -47,7 +48,14 @@ class ViewModel: ObservableObject {
     }
     
     private func updateActivityLevel() {
-        guard let recorder = audioService.audioRecorder else { return }
+        
+        guard let recorder = audioService.audioRecorder,
+              currentSessionIsInteractive,
+              gameViewIsShown else {
+            lastUpdateTime = Date()
+            blowingTime = 0.0
+            return
+        }
         
         recorder.updateMeters()
         let level = recorder.averagePower(forChannel: 0)
@@ -55,38 +63,19 @@ class ViewModel: ObservableObject {
         let currentTime = Date()
         
         if level > activityUpdateThreshold {
+            
             if let lastTime = lastUpdateTime {
                 let deltaTime = currentTime.timeIntervalSince(lastTime)
                 blowingTime += deltaTime
             }
-            
-            inactiveTime = 0.0
-            motivationalMessage = nil
-            
+                        
             if blowingTime >= requiredBlowingTime {
                 sessionSuccess()
             }
             
-        } else {
-            blowingTime = 0.0
-            inactiveTime += 0.1
-            
-            if inactiveTime >= maxInactiveTime && motivationalMessage == nil {
-                motivationalMessage = randomMotivationalMessage()
-            }
-        }
+        } else { blowingTime = 0.0 }
         
         lastUpdateTime = currentTime
-    }
-    
-    private func randomMotivationalMessage() -> String {
-        let messages = [
-            "Breathe… You can do this. Blow to calm the fire.",
-            "Focus on your breath. Blow to quiet the flames.",
-            "It's okay. Try again. A deep breath, and blow.",
-            "You're in control. Just breathe and let go."
-        ]
-        return messages.randomElement() ?? "Keep going!"
     }
     
     private func sessionSuccess() {
@@ -96,7 +85,6 @@ class ViewModel: ObservableObject {
             currentSession += 1
             blowingTime = 0.0
         } else {
-            // Ultima sessione completata
             print("All sessions completed!")
             stopTimer()
             gameCompleted = true
