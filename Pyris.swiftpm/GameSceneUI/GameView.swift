@@ -17,6 +17,14 @@ struct GameView: View {
     
     @State private var currentError: Error?
     
+    private var microphoneText: String {
+        if viewModel.activityUpdateThreshold >= -20 { return "Very noisy" }
+        else if viewModel.activityUpdateThreshold > -30 { return "Noisy" }
+        else if viewModel.activityUpdateThreshold > -45 { return "Average" }
+        else if viewModel.activityUpdateThreshold > -50 { return "Quiet" }
+        else { return "Very Quiet" }
+    }
+    
     var body: some View {
         
         GeometryReader { geometry in
@@ -71,9 +79,18 @@ struct GameView: View {
                         .scaleEffect(2.5 * viewModel.activityLevel, anchor: .bottom)
                         .animation(.easeInOut(duration: 0.5), value: viewModel.activityLevel)
                     
-                    ProgressBar(progress: progress)
-                        .frame(width: 600, height: 50)
-                        .padding(.vertical, 32)
+                    HStack() {
+                        ProgressBar(progress: progress)
+                            .frame(width: 600, height: 50)
+                        
+                        Label(microphoneText, systemImage: "microphone.fill")
+                            .foregroundStyle(.white)
+                            .fontWidth(.expanded)
+                            .padding(10)
+                            .background(.black.opacity(0.7))
+                            .clipShape(.rect(cornerRadius: 10))
+                    }
+                    .padding(.vertical, 32)
                 }
                 .onAppear {
                     if viewModel.currentSession == 1 &&

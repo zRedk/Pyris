@@ -34,7 +34,7 @@ struct LauchView: View {
                     
                     CustomButton(buttonType: .start) {
                         withAnimation {
-                            setSceneMode(.intro)
+                            setSceneMode(.micSetup)
                         }
                     }
                 }

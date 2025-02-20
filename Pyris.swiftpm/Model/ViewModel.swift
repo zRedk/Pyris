@@ -11,13 +11,14 @@ import SwiftUI
 final class ViewModel: ObservableObject {
     
     private let audioService = AudioService()
-    private let activityUpdateThreshold: Float = -35
     let requiredBlowingTime: TimeInterval = 3.0
     let maxSessions = 3
     let maxInactiveTime: TimeInterval = 4.0
     
     private var timer: DispatchSourceTimer?
     private var lastUpdateTime: Date?
+    
+    var activityUpdateThreshold: Float = -35
     
     @Published var blowingTime: TimeInterval = 0.0
     @Published var activityLevel: CGFloat = 0.0

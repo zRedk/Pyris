@@ -14,6 +14,7 @@ enum SceneMode: Equatable {
     }
     
     case launch
+    case micSetup
     case intro
     case tutorial
     case infraGame
