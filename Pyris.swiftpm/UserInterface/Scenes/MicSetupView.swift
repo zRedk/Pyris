@@ -13,7 +13,7 @@ struct MicSetupView: View {
     
     @Environment(\.setSceneMode) private var setSceneMode
     
-    @StateObject private var setupModel: MicSetupModel = .init()
+    @StateObject private var setupModel: SetupModel = .init()
     
     @State private var currentError: Error? = nil
     

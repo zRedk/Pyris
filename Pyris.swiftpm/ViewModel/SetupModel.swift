@@ -1,5 +1,5 @@
 //
-//  MicSetupModel.swift
+//  SetupModel.swift
 //  Pyris
 //
 //  Created by Federica Mosca on 20/02/25.
@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 @MainActor
-final class MicSetupModel: ObservableObject {
+final class SetupModel: ObservableObject {
     
     private let audioService = AudioService()
     private var timer: DispatchSourceTimer?
