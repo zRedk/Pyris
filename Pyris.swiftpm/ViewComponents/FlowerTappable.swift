@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import AVFoundation
+
 
 struct FlowerTappable: View {
     
@@ -16,6 +18,8 @@ struct FlowerTappable: View {
     @State private var flowerIsShown: Bool = false
     
     @State private var isAnimating: Bool = false
+        
+    @State private var audioPlayer: AVAudioPlayer?
     
     @Binding var flowersToTap: Int
     
@@ -47,6 +51,7 @@ struct FlowerTappable: View {
                 Button {
                     withAnimation {
                         flowerIsShown.toggle()
+                        playSound()
                         flowersToTap -= 1
                     }
                 } label: {
@@ -64,4 +69,18 @@ struct FlowerTappable: View {
         .frame(width: 100)
         .onAppear { isAnimating = true }
     }
+    
+    func playSound() {
+        
+        let soundURL = Bundle.main.url(
+            forResource: "bubble-pop",
+            withExtension: "mp3"
+        )
+        
+        guard let soundURL else { return }
+        
+        audioPlayer = try? AVAudioPlayer(contentsOf: soundURL)
+        audioPlayer?.play()
+    }
+    
 }
