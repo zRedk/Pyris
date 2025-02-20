@@ -1,5 +1,5 @@
 //
-//  ViewModel.swift
+//  AppModel.swift
 //  Pyris
 //
 //  Created by Federica Mosca on 29/01/25.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-final class ViewModel: ObservableObject {
+final class AppModel: ObservableObject {
     
     private let audioService = AudioService()
     let requiredBlowingTime: TimeInterval = 3.0

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GameView: View {
     
-    @EnvironmentObject private var viewModel: ViewModel
+    @EnvironmentObject private var viewModel: AppModel
     
     @Environment(\.setSceneMode) private var setSceneMode
     

@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct MyApp: App {
     
-    @StateObject private var viewModel = ViewModel()
+    @StateObject private var viewModel = AppModel()
     
     @State private var currentSceneMode: SceneMode = .launch
     

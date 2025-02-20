@@ -34,24 +34,26 @@ final class MicSetupModel: ObservableObject {
         newTimer.schedule(deadline: .now(), repeating: 0.2)
         newTimer.setEventHandler { [weak self] in
             Task { @MainActor in
-                
-                guard let recorder = self?.audioService.audioRecorder,
-                      let currentThreshold = self?.microphoneThreshold else {
-                    return
-                }
-                
-                recorder.updateMeters()
-                let currentLevel = recorder.averagePower(forChannel: 0)
-                
-                let gain: Float = 2
-                let normalizedLevel = (currentLevel - currentThreshold) / (0 - currentThreshold)
-                let adjustedLevel = min(normalizedLevel * gain, 1)
-                
-                self?.microphoneBarLevel = min(max(.init(adjustedLevel), 0.1), 1.0)
+                self?.microphoneUpdate()
             }
         }
         newTimer.resume()
         timer = newTimer
+    }
+    
+    private func microphoneUpdate() {
+        guard let recorder = self.audioService.audioRecorder else {
+            return
+        }
+        
+        recorder.updateMeters()
+        let currentLevel = recorder.averagePower(forChannel: 0)
+        
+        let gain: Float = 2
+        let normalizedLevel = (currentLevel - microphoneThreshold) / (0 - microphoneThreshold)
+        let adjustedLevel = min(normalizedLevel * gain, 1)
+        
+        self.microphoneBarLevel = min(max(.init(adjustedLevel), 0.1), 1.0)
     }
     
     private func stopTimer() {
