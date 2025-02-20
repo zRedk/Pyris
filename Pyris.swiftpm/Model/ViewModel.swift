@@ -26,8 +26,20 @@ final class ViewModel: ObservableObject {
     @Published var currentSessionIsInteractive: Bool = false
     @Published var gameCompleted: Bool = false
     @Published var inactiveTime: TimeInterval = 0.0
-    @Published var gameViewIsShown: Bool = true
     @Published var isFirstInfraGameShown: Bool = false
+    
+    @Published var gameViewIsShown: Bool = true {
+        didSet {
+            guard let soundEffect: SoundEffect = .init(
+                fileNamed: "inhale"
+            ) else { return }
+            
+            if gameViewIsShown && !currentSessionIsInteractive {
+                audioService.playSoundEffect(soundEffect)
+                
+            } else { audioService.stopPlaying() }
+        }
+    }
     
     func reset() {
         audioService.stopRecording()

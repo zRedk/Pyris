@@ -13,6 +13,8 @@ struct TutorialView: View {
     
     @State private var currentPhase: TutorialPhase = .phase1
     
+    @State private var audioService: AudioService = .init()
+    
     var body: some View {
         
         GeometryReader { geometry in
@@ -56,6 +58,15 @@ struct TutorialView: View {
                 .frame(width: geometry.size.width,
                        height: geometry.size.height,
                        alignment: .bottomTrailing)
+            }
+            .onAppear {
+                guard let soundEffect: SoundEffect = .init(
+                    fileNamed: "singleHeartbeat",
+                    reapeatCount: -1,
+                    playbackRate: 1.5
+                ) else { return }
+                
+                audioService.playSoundEffect(soundEffect)
             }
         }
     }
