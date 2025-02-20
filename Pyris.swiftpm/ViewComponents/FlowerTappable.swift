@@ -17,7 +17,6 @@ struct FlowerTappable: View {
     
     @State private var flowerIsShown: Bool = false
     @State private var isAnimating: Bool = false
-    @State private var audioService: AudioService = .init()
     
     var body: some View {
         
@@ -49,12 +48,6 @@ struct FlowerTappable: View {
                         flowerIsShown.toggle()
                         flowersToTap -= 1
                     }
-                    
-                    guard let soundEffect: SoundEffect = .init(
-                        fileNamed: "bubble-pop"
-                    ) else { return }
-                    
-                    audioService.playSoundEffect(soundEffect)
                 } label: {
                     Circle()
                         .fill(.white)

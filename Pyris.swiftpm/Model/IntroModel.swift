@@ -17,8 +17,17 @@ final class IntroModel: ObservableObject {
     @Published var showScene: Bool = false
     @Published var currentPhase: IntroPhase = .phase1
     @Published var nextButtonIsEnabled: Bool = false
-    @Published var flowersToTap: Int = 4
     @Published var windIsBlowing: Bool = false
+    
+    @Published var flowersToTap: Int = 4 {
+        didSet {
+            guard let soundEffect: SoundEffect = .init(
+                fileNamed: "bubble-pop"
+            ) else { return }
+            
+            audioService.playSoundEffect(soundEffect)
+        }
+    }
     
     func enableNext(_ phase: IntroPhase) {
         
