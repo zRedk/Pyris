@@ -9,7 +9,9 @@ import SwiftUI
 
 struct ProgressBar: View {
     
-    var progress: CGFloat
+    private var progress: CGFloat
+    
+    private let color: Color
     
     var body: some View {
         
@@ -24,10 +26,15 @@ struct ProgressBar: View {
                 
                 Capsule()
                     .frame(width: geometry.size.width * progress, height: 25)
-                    .foregroundColor(.accentColor)
+                    .foregroundColor(color)
             }
             .cornerRadius(5)
         }
         .frame(height: 25)
+    }
+    
+    init(progress: CGFloat, color: Color = .accentColor) {
+        self.progress = progress
+        self.color = color
     }
 }

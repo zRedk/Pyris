@@ -13,15 +13,9 @@ struct MicSetupView: View {
     
     @Environment(\.setSceneMode) private var setSceneMode
     
-    @State private var microphoneThreshold: Float = -35
+    @StateObject private var setupModel: MicSetupModel = .init()
     
-    private var microphoneText: String {
-        if microphoneThreshold >= -20 { return "Very noisy" }
-        else if microphoneThreshold > -30 { return "Noisy" }
-        else if microphoneThreshold > -45 { return "Average" }
-        else if microphoneThreshold > -50 { return "Quiet" }
-        else { return "Very Quiet" }
-    }
+    @State private var currentError: Error? = nil
     
     var body: some View {
         
@@ -51,7 +45,7 @@ struct MicSetupView: View {
                         Text("Using the slider below")
                             .foregroundStyle(.orange)
                         
-                        Text("you can adjust the volume if you are in a noisy environment.")
+                        Text("adjust the sensibility according to your sorroundings.")
                     }
                     .foregroundStyle(.white)
                     .font(.system(size: 32))
@@ -63,15 +57,22 @@ struct MicSetupView: View {
                              
                     HStack {
                         
-                        Slider(value: $microphoneThreshold, in: -60 ... -15)
-                            .frame(width: 400, height: 50)
+                        VStack(alignment: .center) {
+                            Slider(value: $setupModel.microphoneThreshold, in: -60 ... -15)
+                                .frame(width: 400)
+                            
+                            ProgressBar(progress: setupModel.microphoneBarLevel, color: .green.opacity(0.7))
+                                .tint(.green.opacity(0.5))
+                                .frame(width: 400, height: 50)
+                                .animation(.default, value: setupModel.microphoneBarLevel)
+                        }
                         
                         VStack(alignment: .center) {
                             Text("Environment")
                                 .font(.system(size: 28))
                                 .foregroundStyle(.orange)
                             
-                            Text(microphoneText)
+                            Text(setupModel.microphoneText)
                                 .font(.system(size: 32))
                         }
                         .frame(width: 200)
@@ -86,7 +87,8 @@ struct MicSetupView: View {
                 
                 CustomButton(buttonType: .next) {
                     
-                    viewModel.activityUpdateThreshold = microphoneThreshold
+                    setupModel.dismantleActivity()
+                    viewModel.activityUpdateThreshold = setupModel.microphoneThreshold
                     
                     withAnimation {
                         setSceneMode(.intro)
@@ -97,6 +99,14 @@ struct MicSetupView: View {
                        height: geometry.size.height,
                        alignment: .bottomTrailing)
             }
+            .task(priority: .userInitiated) { @MainActor in
+                do {
+                    try await setupModel.startActivity()
+                } catch { currentError = error }
+            }
+            .alert("Error", isPresented: .constant(currentError != nil)) {
+                Button("I Understand.") { setSceneMode(.launch) }
+            } message: { Text(currentError?.localizedDescription ?? "") }
         }
     }
 }
