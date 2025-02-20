@@ -64,4 +64,11 @@ enum IntroPhase: Int, CaseIterable, Hashable {
         case .phase7: 2.5
         }
     }
+    
+    var audioAssetURL: URL? {
+        switch self {
+        case .phase2: Bundle.main.url(forResource: "pyris-entry", withExtension: "mp3")
+        default: nil
+        }
+    }
 }
