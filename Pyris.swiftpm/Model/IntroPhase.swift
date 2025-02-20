@@ -65,10 +65,19 @@ enum IntroPhase: Int, CaseIterable, Hashable {
         }
     }
     
-    var audioAssetURL: URL? {
+    var soundEffect: SoundEffect? {
         switch self {
-        case .phase2: Bundle.main.url(forResource: "pyris-entry", withExtension: "mp3")
-        case .phase5: Bundle.main.url(forResource: "wind-blowing", withExtension: "mp3")
+        case .phase2: .init(fileNamed: "pyris-entry")
+        case .phase5: .init(fileNamed: "wind-blowing")
+        case .phase6: .init(
+            fileNamed: "singleHeartbeat",
+            reapeatCount: -1
+        )
+        case .phase7: .init(
+            fileNamed: "singleHeartbeat",
+            reapeatCount: -1,
+            playbackRate: 1.5
+        )
         default: nil
         }
     }

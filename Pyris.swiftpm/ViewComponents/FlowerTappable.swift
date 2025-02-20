@@ -12,16 +12,12 @@ import AVFoundation
 struct FlowerTappable: View {
     
     let flowerColor: FlowerColor
-    
     let isBurnt: Bool
+    @Binding var flowersToTap: Int
     
     @State private var flowerIsShown: Bool = false
-    
     @State private var isAnimating: Bool = false
-        
-    @State private var audioPlayer: AVAudioPlayer?
-    
-    @Binding var flowersToTap: Int
+    @State private var audioService: AudioService = .init()
     
     var body: some View {
         
@@ -51,9 +47,14 @@ struct FlowerTappable: View {
                 Button {
                     withAnimation {
                         flowerIsShown.toggle()
-                        playSound()
                         flowersToTap -= 1
                     }
+                    
+                    guard let soundEffect: SoundEffect = .init(
+                        fileNamed: "bubble-pop"
+                    ) else { return }
+                    
+                    audioService.playSoundEffect(soundEffect)
                 } label: {
                     Circle()
                         .fill(.white)
@@ -69,18 +70,4 @@ struct FlowerTappable: View {
         .frame(width: 100)
         .onAppear { isAnimating = true }
     }
-    
-    func playSound() {
-        
-        let soundURL = Bundle.main.url(
-            forResource: "bubble-pop",
-            withExtension: "mp3"
-        )
-        
-        guard let soundURL else { return }
-        
-        audioPlayer = try? AVAudioPlayer(contentsOf: soundURL)
-        audioPlayer?.play()
-    }
-    
 }

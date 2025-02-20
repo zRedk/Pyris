@@ -12,24 +12,13 @@ import AVFoundation
 @MainActor
 final class IntroModel: ObservableObject {
     
-    private var audioPlayer: AVAudioPlayer?
+    private var audioService: AudioService = .init()
     
     @Published var showScene: Bool = false
     @Published var currentPhase: IntroPhase = .phase1
     @Published var nextButtonIsEnabled: Bool = false
     @Published var flowersToTap: Int = 4
     @Published var windIsBlowing: Bool = false
-    
-    func playAudio() {
-            
-        guard let audioAssetURL = currentPhase.audioAssetURL else {
-            return
-        }
-        
-        audioPlayer = nil
-        audioPlayer = try? .init(contentsOf: audioAssetURL)
-        audioPlayer?.play()
-    }
     
     func enableNext(_ phase: IntroPhase) {
         
@@ -57,6 +46,9 @@ final class IntroModel: ObservableObject {
         }
         
         enableNext(phase)
-        playAudio()
+        
+        if let soundEffect = phase.soundEffect {
+            audioService.playSoundEffect(soundEffect)
+        }
     }
 }
