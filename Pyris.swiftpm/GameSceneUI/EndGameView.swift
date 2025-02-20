@@ -31,6 +31,8 @@ struct EndGameView: View {
             
             ZStack(alignment: .bottom) {
                 
+                Color.black
+                
                 if currentPhase != 4 {
                     Group {
                         Image("Background")
@@ -54,7 +56,8 @@ struct EndGameView: View {
                     }
                     .frame(width: geometry.size.width,
                            height: geometry.size.height)
-                } else { Color.black }
+                    .transition(.identity)
+                }
                 
                 VStack (alignment: .center) {
                     
@@ -139,4 +142,9 @@ struct EndGameView: View {
             .transition(.opacity.animation(.easeInOut(duration: 1)))
         }
     }
+}
+
+#Preview {
+    EndGameView()
+        .ignoresSafeArea()
 }
