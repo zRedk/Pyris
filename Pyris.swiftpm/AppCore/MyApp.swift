@@ -14,6 +14,10 @@ struct MyApp: App {
     
     @State private var currentSceneMode: SceneMode = .launch
     
+    @State private var audioService: AudioService = .init()
+    
+    @Environment(\.scenePhase) private var scenePhase
+    
     var body: some Scene {
         
         WindowGroup {
@@ -36,6 +40,17 @@ struct MyApp: App {
             .statusBarHidden(true)
             .environment(\.setSceneMode, setSceneMode)
             .environmentObject(viewModel)
+            .onChange(of: scenePhase) { newValue in
+                if newValue == .active {
+                    audioService.playSoundEffect(nil, resume: true)
+                } else {
+                    audioService.stopPlaying(pause: true)
+                }
+            }
+            .onAppear {
+                guard let soundEffect = SoundEffect(fileNamed: "pyrisTheme", reapeatCount: -1) else { return }
+                audioService.playSoundEffect(soundEffect)
+            }
         }
     }
     
@@ -43,6 +58,19 @@ struct MyApp: App {
         
         if mode == .launch {
             viewModel.reset()
+        }
+        
+        switch mode {
+        case .endGame:
+            
+            if let soundEffect = SoundEffect(fileNamed: "pyrisTheme", reapeatCount: -1){
+                audioService.playSoundEffect(soundEffect)
+            }
+            
+        case .launch:
+            break
+        default:
+            audioService.stopPlaying()
         }
         
         currentSceneMode = mode

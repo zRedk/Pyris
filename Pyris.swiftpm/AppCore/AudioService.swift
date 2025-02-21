@@ -27,13 +27,19 @@ final class AudioService {
         }
     }
     
-    func playSoundEffect(_ soundEffect: SoundEffect) {
-        audioPlayer = try? .init(contentsOf: soundEffect.fileURL)
-        audioPlayer?.numberOfLoops = soundEffect.repeatCount
-        audioPlayer?.enableRate = true
-        audioPlayer?.rate = soundEffect.playbackRate
-        audioPlayer?.prepareToPlay()
-        audioPlayer?.play()
+    func playSoundEffect(_ soundEffect: SoundEffect?, resume: Bool = false) {
+        
+        if resume {
+            audioPlayer?.play()
+            
+        } else if let soundEffect {
+            audioPlayer = try? .init(contentsOf: soundEffect.fileURL)
+            audioPlayer?.numberOfLoops = soundEffect.repeatCount
+            audioPlayer?.enableRate = true
+            audioPlayer?.rate = soundEffect.playbackRate
+            audioPlayer?.prepareToPlay()
+            audioPlayer?.play()
+        }
     }
     
     func setupRecording() throws {
@@ -65,9 +71,14 @@ final class AudioService {
         self.audioRecorder = audioRecorder
     }
     
-    func stopPlaying() {
-        audioPlayer?.stop()
-        audioPlayer = nil
+    func stopPlaying(pause: Bool = false) {
+        
+        if pause {
+            audioPlayer?.pause()
+        } else {
+            audioPlayer?.stop()
+            audioPlayer = nil
+        }
     }
     
     func stopRecording() {

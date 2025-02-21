@@ -51,7 +51,7 @@ final class AppModel: ObservableObject {
         currentSessionIsInteractive = false
         gameCompleted = false
         inactiveTime = 0.0
-        gameViewIsShown = true
+        gameViewIsShown = false
         isFirstInfraGameShown = false
     }
     
